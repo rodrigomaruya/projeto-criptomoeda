@@ -1,0 +1,132 @@
+.container {
+  margin: 0 14px;
+}
+.form {
+  width: 100%;
+  display: flex;
+  gap: 14px;
+}
+.form input {
+  width: 100%;
+  height: 44px;
+  border: none;
+  padding: 0 8px;
+  border-radius: 4px;
+  outline: none;
+}
+.form button {
+  background-color: transparent;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0 14px;
+  margin: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+table caption {
+  font-size: 16px;
+  margin: 0.5em 0.75em;
+}
+.name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-left: 2px;
+}
+.imgLogo {
+  width: 20px;
+  height: 20px;
+}
+th {
+  color: #fff;
+}
+.tr {
+  background-color: #1d1c20;
+}
+td:first-child,
+th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+td:last-child,
+th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+table th,
+table tr {
+  padding: 14px;
+  text-align: center;
+}
+
+.tdLabel1 {
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+  padding: 14px 8px;
+}
+.tdProfit {
+  color: #12f98a;
+  font-weight: bold;
+  padding: 14px 0;
+}
+.tdLoss {
+  color: #f91257;
+  font-weight: bold;
+  padding: 14px 0;
+}
+
+.getMore {
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-weight: bolder;
+  margin-bottom: 30px;
+}
+/*Responsividade*/
+
+@media (max-width: 600px) {
+  .name img {
+    margin-left: 14px;
+  }
+  table {
+    border: 0;
+  }
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+    padding: 0;
+  }
+  .tr {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    margin-bottom: 14px;
+    padding: 0 5px;
+  }
+  table td {
+    border-bottom: 1px solid rgba(221, 221, 221, 0.17);
+    display: block;
+    text-align: right;
+    font-size: 14px;
+  }
+  table td::before {
+    content: attr(data-Label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  table td:last-child {
+    border-bottom: 0;
+  }
+  td:first-child,
+  th:first-child {
+    border-radius: 0;
+  }
+  td:last-child,
+  th:last-child {
+    border-radius: 0;
+  }
+}
