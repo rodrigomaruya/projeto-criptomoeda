@@ -33,6 +33,7 @@ export function Home() {
   const [input, setInput] = useState("");
   const [coin, setCoin] = useState<coinProps[]>([]);
   const [offset, setOffSet] = useState(0);
+
   const navigate = useNavigate();
 
   const getCoins = useCallback(async () => {
@@ -51,7 +52,6 @@ export function Home() {
         `/v2/assets?limit=10&offset=${offset}`
       );
       const dataCoins = data.data;
-
       const formatResult = dataCoins.map((item) => {
         const format = {
           ...item,
@@ -62,7 +62,6 @@ export function Home() {
         return format;
       });
       setCoin((prevCoin) => [...prevCoin, ...formatResult]);
-      console.log(formatResult);
     } catch (error) {
       console.log(error);
     }
@@ -99,6 +98,7 @@ export function Home() {
           <FaSearch size={30} color="#fff" />
         </button>
       </form>
+
       <table>
         <thead>
           <tr>

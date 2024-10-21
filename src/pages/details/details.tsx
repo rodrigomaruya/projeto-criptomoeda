@@ -1,19 +1,22 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { coinProps } from "../home/home";
-import { api } from "../../api/api";
 import styles from "./details.module.css";
+
 interface resultProps {
-  data: {
-    data: coinProps;
-  };
+  data: coinProps;
 }
+interface ErrorProps {
+  error: string;
+}
+type dataProps = resultProps | ErrorProps;
 
 export function Details() {
   const { search } = useParams();
   const [detailCoin, setDetailCoin] = useState<coinProps>();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [erro, setError] = useState("");
 
   const price = Intl.NumberFormat("en-Us", {
     style: "currency",
@@ -27,31 +30,41 @@ export function Details() {
 
   useEffect(() => {
     async function coinDetail() {
-      try {
-        const { data }: resultProps = await api.get(
-          `https://api.coincap.io/v2/assets/${search}`
-        );
-        const dataResult = data.data;
+      fetch(`https://api.coincap.io/v2/assets/${search}`)
+        .then((res) => res.json())
+        .then((data: dataProps) => {
+          if ("error" in data) {
+            setError(data.error);
+            setLoading(false);
+          } else {
+            const dataResult = data.data; // Acessa os dados da moeda
 
-        const formatResult = {
-          ...dataResult,
-          formatPrice: price.format(Number(dataResult.priceUsd)),
-          formatMarket: priceCompact.format(Number(dataResult.marketCapUsd)),
-          formatVolume: priceCompact.format(Number(dataResult.volumeUsd24Hr)),
-        };
-        setDetailCoin(formatResult);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-
-        navigate("*");
-      }
+            const formatResult = {
+              ...dataResult,
+              formatPrice: price.format(Number(dataResult?.priceUsd)),
+              formatMarket: priceCompact?.format(
+                Number(dataResult?.marketCapUsd)
+              ),
+              formatVolume: priceCompact?.format(
+                Number(dataResult?.volumeUsd24Hr)
+              ),
+            };
+            setDetailCoin(formatResult);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     coinDetail();
-  }, [search, navigate, price, priceCompact]);
+  }, [search, navigate, price, priceCompact, detailCoin]);
 
-  if (loading || !detailCoin) {
+  if (loading) {
     return <h1 className={styles.center}>Carregando...</h1>;
+  }
+  if (erro) {
+    return <div className={styles.center}>{erro}</div>;
   }
   return (
     <div className={styles.container}>
@@ -59,7 +72,7 @@ export function Details() {
       <h1 className={styles.center}>{detailCoin?.symbol} </h1>
       <div className={styles.content}>
         <img
-          src={`https://assets.coincap.io/assets/icons/${detailCoin.symbol.toLowerCase()}@2x.png`}
+          src={`https://assets.coincap.io/assets/icons/${detailCoin?.symbol.toLowerCase()}@2x.png`}
           alt="logo da moeda"
         />
         <p>
